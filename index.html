@@ -78,9 +78,14 @@
       gap: 16px;
       margin-top: 16px;
     }
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
       .countdown {
         grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 360px) {
+      .countdown {
+        grid-template-columns: 1fr;
       }
     }
     .unit {
@@ -199,7 +204,7 @@
       el.minutes.textContent = pad(minutes);
       el.seconds.textContent = pad(seconds);
 
-      const total = DUE - new Date("2025-01-14T00:00:00"); // cca začátek těhotenství
+      const total = DUE - new Date("2025-01-14T00:00:00");
       const progress = Math.min(100, Math.max(0, (now - new Date("2025-01-14")) / total * 100));
       el.bar.style.width = progress + "%";
     }
