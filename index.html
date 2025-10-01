@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Odpočet do porodu – Patrik</title>
+  <meta name="description" content="Elegantní responzivní odpočet do porodu našeho syna Patrika (21. 10. 2025)." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#C99700" />
+
+  <style>
+    :root {
+      --mustard:#C99700;
+      --mustard-700:#7A5A00;
+      --earth-1:#D9CBB8;
+      --earth-2:#BFA98F;
+      --earth-3:#1F1B16;
+      --olive:#5C6847;
+      --shadow: 0 10px 30px rgba(31,27,22,.25);
+      --radius: 22px;
+    }
+    *{box-sizing:border-box}
+    body {
+      margin:0;
+      font-family:'Inter',sans-serif;
+      color:var(--earth-3);
+      background:linear-gradient(180deg, var(--earth-1), var(--earth-2));
+      display:grid;
+      place-items:center;
+      padding:24px;
+      min-height:100vh;
+    }
+    .app {
+      max-width:900px;
+      width:100%;
+      background: rgba(250, 242, 232, 0.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border:1px solid rgba(31,27,22,.15);
+      overflow:hidden;
+    }
+    .hero { padding:40px; }
+    .badge {
+      display:inline-block;
+      padding:8px 14px;
+      background:#fdf2d4;
+      border:1px solid rgba(201,151,0,.45);
+      color: var(--mustard-700);
+      border-radius: 999px;
+      font-weight:600;
+      font-size:14px;
+    }
+    .title {
+      margin: 18px 0 8px;
+      font-family:'Playfair Display', serif;
+      font-size: 42px;
+      line-height:1.2;
+    }
+    .subtitle { margin:0; opacity:.9; font-size:16px; }
+    .label-heading {
+      margin: 20px 0 8px;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+    .countdown {
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .unit {
+      background: #fff;
+      border:1px solid rgba(31,27,22,.12);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      text-align:center;
+    }
+    .value { font-size: 34px; font-weight:800; }
+    .label { font-size:13px; opacity:.75; text-transform:uppercase; }
+    .progress {
+      margin-top:20px;
+      background: rgba(31,27,22,.15);
+      height: 10px;
+      border-radius: 999px;
+      overflow:hidden;
+    }
+    .bar {
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--mustard), var(--olive));
+      transition: width .5s ease;
+    }
+    .footer {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:16px 24px;
+      background: rgba(255,255,255,.6);
+      border-top:1px solid rgba(31,27,22,.1);
+    }
+    .btn {
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      background: var(--mustard);
+      color:#1f1b16;
+      font-weight:700;
+      padding: 10px 14px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(201,151,0,.25);
+    }
+    .btn:hover { opacity:.9; }
+    .done { display:none; text-align:center; padding:30px; }
+    .done h2 { font-family:'Playfair Display', serif; margin:0 0 10px; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <span class="badge">Odpočet do porodu</span>
+      <h1 class="title">Syn <span style="color:var(--mustard-700)">Patrik</span> je na cestě</h1>
+      <p class="subtitle">Termín porodu: <strong>21. 10. 2025</strong></p>
+
+      <p class="label-heading">Zbývá:</p>
+      <div class="countdown" id="countdown">
+        <div class="unit"><div class="value" id="days">–</div><div class="label">dní</div></div>
+        <div class="unit"><div class="value" id="hours">–</div><div class="label">hodin</div></div>
+        <div class="unit"><div class="value" id="minutes">–</div><div class="label">minut</div></div>
+        <div class="unit"><div class="value" id="seconds">–</div><div class="label">sekund</div></div>
+      </div>
+
+      <div class="progress"><div class="bar" id="bar"></div></div>
+    </section>
+
+    <section class="done" id="done">
+      <h2>Je to tady! 🎉</h2>
+      <p>Vítej na světě, Patriku ❤️</p>
+    </section>
+
+    <footer class="footer">
+      <div>Odpočítáváme do <strong>21. 10. 2025</strong></div>
+      <div>
+        <button class="btn" id="shareBtn">Sdílet</button>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    const BABY_NAME = "Patrik";
+    const DUE = new Date("2025-10-21T00:00:00");
+
+    const el = {
+      days: document.getElementById('days'),
+      hours: document.getElementById('hours'),
+      minutes: document.getElementById('minutes'),
+      seconds: document.getElementById('seconds'),
+      bar: document.getElementById('bar'),
+      cd: document.getElementById('countdown'),
+      done: document.getElementById('done'),
+      shareBtn: document.getElementById('shareBtn')
+    };
+
+    function pad(n){ return String(n).padStart(2,'0'); }
+
+    function update() {
+      const now = new Date();
+      const diff = DUE - now;
+      if (diff <= 0) {
+        el.cd.style.display = "none";
+        el.done.style.display = "block";
+        clearInterval(timer);
+        return;
+      }
+      const days = Math.floor(diff / (1000*60*60*24));
+      const hours = Math.floor((diff / (1000*60*60)) % 24);
+      const minutes = Math.floor((diff / (1000*60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      el.days.textContent = days;
+      el.hours.textContent = pad(hours);
+      el.minutes.textContent = pad(minutes);
+      el.seconds.textContent = pad(seconds);
+
+      const total = DUE - new Date("2025-01-14T00:00:00"); // cca začátek těhotenství
+      const progress = Math.min(100, Math.max(0, (now - new Date("2025-01-14")) / total * 100));
+      el.bar.style.width = progress + "%";
+    }
+
+    update();
+    const timer = setInterval(update, 1000);
+
+    // Sdílení
+    el.shareBtn.addEventListener("click", async () => {
+      const url = window.location.href;
+      if (navigator.share) {
+        try {
+          await navigator.share({title: document.title, text: "Odpočet do porodu Patrika", url});
+        } catch(e){}
+      } else {
+        await navigator.clipboard.writeText(url);
+        el.shareBtn.textContent = "Odkaz zkopírován ✅";
+        setTimeout(()=> el.shareBtn.textContent="Sdílet", 2000);
+      }
+    });
+  </script>
+</body>
+</html>
